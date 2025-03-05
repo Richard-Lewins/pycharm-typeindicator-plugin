@@ -46,6 +46,7 @@ class TypeIndicatorWidget(private val project: Project) : StatusBarWidget, TextP
 
     override fun getPresentation(): StatusBarWidget.WidgetPresentation = this
 
+    // Function to setup the caret listener
     private fun setupCaretListener() {
         EditorFactory.getInstance().eventMulticaster.addCaretListener(object : CaretListener {
             override fun caretPositionChanged(event: CaretEvent) {
@@ -56,6 +57,7 @@ class TypeIndicatorWidget(private val project: Project) : StatusBarWidget, TextP
         }, this)
     }
 
+    // Function called when the caret position changes
     private fun updateTypeInfo(editor: Editor) {
         val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.document) ?: return
         val offset = editor.caretModel.offset
@@ -66,6 +68,7 @@ class TypeIndicatorWidget(private val project: Project) : StatusBarWidget, TextP
         setTypeText(type ?: "Unknown")
     }
 
+    // Function to resolve the type of the variable under the caret
     private fun resolveVariableType(element: PsiElement): String? {
         val context = TypeEvalContext.userInitiated(element.project, element.containingFile)
 
@@ -98,6 +101,7 @@ class TypeIndicatorWidget(private val project: Project) : StatusBarWidget, TextP
         return null
     }
 
+    // Function to set the type text
     private fun setTypeText(text: String) {
         if (text != typeText) {
             typeText = text
